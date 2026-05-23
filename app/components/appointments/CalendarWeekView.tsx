@@ -1,6 +1,6 @@
 import React from "react";
-import { Appointment, STATUS_META } from "../../../types/appointments";
-import { TODAY } from "../../../lib/appointmentsUtils";
+import { Appointment, STATUS_META } from "../../types/appointments";
+import { TODAY } from "../../lib/appointmentsUtils";
 
 interface CalendarWeekViewProps {
   weekDays: string[];

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import AppLayout        from "../../components/common/AppLayout";
-import useAnalyticsStore from "../../store/useAnalyticsStore";
+import useAnalyticsStore from "../../hooks/useAnalyticsStore";
 import { Period }       from "../../types/analytics";
 import MetricsGrid      from "../../components/analytics/MetricsCharts";
 import PatientsTrends   from "../../components/analytics/PatientsTrends";

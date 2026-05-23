@@ -1,5 +1,5 @@
 import React from "react";
-import { MedicalRecord, TYPE_META, STATUS_META } from "../../../types/records";
+import { MedicalRecord, TYPE_META, STATUS_META } from "../../types/records";
 import { DownloadSvg } from "./RecordIcons";
 
 interface RecordGridCardProps {

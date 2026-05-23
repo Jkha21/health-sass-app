@@ -10,7 +10,7 @@ import {
   RecordTypeFilters,
   RecordStats,
 } from "../components/records";
-import { MedicalRecord, RecordType, RecordStatus, ViewMode, TYPE_META, STATUS_META } from "../../types/records";
+import { MedicalRecord, RecordType, RecordStatus, ViewMode, TYPE_META, STATUS_META } from "../types/records";
 
 /* ─── Mock data ─────────────────────────────────────────── */
 const RECORDS: MedicalRecord[] = [

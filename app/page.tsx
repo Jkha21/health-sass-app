@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "./components/ui/Button";
-import useAuthStore from "./store/useAuthStore";
+import useAuthStore from "./hooks/useAuthStore";
 import LoginPanel from "./components/auth/LoginPanel";
 import { GoogleIcon, ShieldIcon, AlertIcon, Spinner } from "./components/auth/LogoIcons";
 

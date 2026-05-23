@@ -2,10 +2,10 @@
 
 import React, { useState, useMemo } from "react";
 import AppLayout from "../components/common/AppLayout";
-import { Appointment, AppointmentStatus, ViewMode } from "../../types/appointments";
+import { Appointment, AppointmentStatus, ViewMode } from "../types/appointments";
 import { AppointmentCard, CalendarWeekView, AppointmentModal, SearchSvg, CalSvg, ListSvgIcon, ChevLeft, ChevRight, PlusSvg } from "../components/appointments";
-import { APPOINTMENTS } from "../../lib/appointmentsData";
-import { TODAY, groupByDate, formatDate, getWeekDays } from "../../lib/appointmentsUtils";
+import { APPOINTMENTS } from "../lib/appointmentsData";
+import { TODAY, groupByDate, formatDate, getWeekDays } from "../lib/appointmentsUtils";
 
 
 export default function AppointmentsPage() {

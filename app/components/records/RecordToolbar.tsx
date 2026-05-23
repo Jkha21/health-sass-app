@@ -1,5 +1,5 @@
 import React from "react";
-import { RecordType, RecordStatus, ViewMode } from "../../../types/records";
+import { RecordType, RecordStatus, ViewMode } from "../../types/records";
 import { SearchSvg, GridSvg, ListSvgIcon, PlusSvg, FilterSvg } from "./RecordIcons";
 
 interface RecordToolbarProps {

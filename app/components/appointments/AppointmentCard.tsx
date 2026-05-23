@@ -1,5 +1,5 @@
 import React from "react";
-import { Appointment, STATUS_META } from "../../../types/appointments";
+import { Appointment, STATUS_META } from "../../types/appointments";
 import { ClockSvg, RoomSvg } from "./AppointmentIcons";
 
 interface AppointmentCardProps {

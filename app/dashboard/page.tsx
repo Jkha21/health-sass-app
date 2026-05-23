@@ -3,13 +3,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import AppLayout from "../components/common/AppLayout";
-import useDashboardStore from "../store/useDashboardStore";
+import useDashboardStore from "../hooks/useDashboardStore";
 import StatsGrid from "../components/dashboard/StatsGrid";
 import QuickActions from "../components/dashboard/QuickActions";
 import RevenueChart from "../components/dashboard/RevenueChart";
-import { useSession } from "../store/useSession";
+import { useSession } from "../hooks/useSession";
 import AuthGuard from "../components/auth/authGuard";
-import { useAuthActions } from "../store/useAuthActions";
+import { useAuthActions } from "../hooks/useAuthActions";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import {
   PatientStatus,

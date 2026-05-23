@@ -1,25 +1,26 @@
 // hooks/useAuthActions.ts
 "use client";
+
 import { useRouter } from "next/navigation";
-import useAuthStore from "../store/useAuthStore";
+import useAuthStore from "../hooks/useAuthStore";
 
 export function useAuthActions() {
   const router = useRouter();
-  const { signOut: storeSignOut } = useAuthStore();
+  const { user, loading, error, signOut: storeSignOut } = useAuthStore();
 
   const signOut = async () => {
     try {
-      // 1. Clear server session cookie
-      await fetch('/api/sessionLogin', { method: 'DELETE' });
-      // 2. Clear client state  
-      await storeSignOut();
-      // 3. Go to ROOT (/)
-      router.replace("/"); // ✅ ROOT not /login
+      await storeSignOut();        // 1) Firebase signOut + destroySession()
+      router.replace("/");    // 2) Go to login after sign-out
     } catch (e) {
       console.error("Sign-out failed:", e);
-      router.replace("/"); // Fallback to root
     }
   };
 
-  return { signOut };
+  return {
+    user,
+    loading,
+    error,
+    signOut,
+  };
 }

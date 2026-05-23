@@ -1,5 +1,5 @@
 import React from "react";
-import { RecordType, TYPE_META } from "../../../types/records";
+import { RecordType, TYPE_META } from "../../types/records";
 
 interface RecordTypeFiltersProps {
   typeFilter: RecordType | "all";

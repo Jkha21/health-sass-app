@@ -5,7 +5,7 @@ import {
   useNotifications,
   AppNotif,
   NotifType,
-} from "../../store/useNotifications";
+} from "../../hooks/useNotifications";
 
 /* ─── Type maps ──────────────────────────────────────────── */
 const TYPE_ICON: Record<NotifType, string> = {

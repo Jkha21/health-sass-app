@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import useAuthStore from "../../store/useAuthStore";
-import { useAuthActions } from "../../store/useAuthActions";
+import useAuthStore from "../../hooks/useAuthStore";
+import { useAuthActions } from "../../hooks/useAuthActions";
 import Sidebar, { ActiveNavItem } from "./Sidebar";
 import Topbar from "./Topbar";
 
@@ -53,9 +53,8 @@ export default function AppLayout({
   const initials = getInitials(displayName);
 
   return (
-    <div className="min-h-screen bg-[#fdeede] font-sans text-[#4a4a4a] antialiased">
-      <div className="flex min-h-screen">
-        {/* Sidebar routes itself via useRouter internally */}
+    <div className="min-h-screen bg-[#fdeede] font-sans text-[#4a4a4a] antialiased w-full max-w-full overflow-hidden">
+      <div className="flex min-h-screen w-full max-w-full">
         <Sidebar
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -64,19 +63,22 @@ export default function AppLayout({
           initials={initials}
         />
 
-        <div className="flex flex-1 flex-col min-h-screen ml-0 md:ml-60 transition-[margin] duration-200">
+        <div className="flex flex-col flex-1 min-h-screen w-full max-w-full min-w-0 overflow-x-hidden ml-0 md:ml-60 transition-[margin] duration-200">
           <Topbar
             title={title}
             initials={initials}
             firstName={firstName}
             onMenuClick={() => setSidebarOpen((o) => !o)}
-            onSignOut={signOut} // uses hook: signOut + redirect
+            onSignOut={signOut}
             breadcrumbs={breadcrumbs}
             showSearch={showSearch}
             searchPlaceholder={searchPlaceholder}
             onSearchChange={onSearchChange}
           />
-          <main className="flex-1 p-7 md:p-5 sm:p-4">{children}</main>
+          
+          <main className="flex-1 w-full max-w-full min-w-0 px-4 py-6 sm:p-5 md:p-7 block">
+            {children}
+          </main>
         </div>
       </div>
     </div>

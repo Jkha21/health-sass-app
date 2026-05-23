@@ -1,13 +1,13 @@
+// app/analytics/page.tsx
 "use client";
 
 import React, { useEffect, useMemo } from "react";
-import AppLayout         from "../components/common/AppLayout";
-import useAnalyticsStore from "../store/useAnalyticsStore";
-import { Period }        from "../types/analytics";
-import MetricsGrid       from "../components/analytics/MetricsCharts";
-import PatientsTrends    from "../components/analytics/PatientsTrends";
-import DiagnosticsPanel  from "../components/analytics/DiagonasticPanel";
-import { LoadingSpinner } from "../components/ui/LoadingSpinner";
+import AppLayout from "../components/common/AppLayout";
+import useAnalyticsStore from "../hooks/useAnalyticsStore";
+import { Period } from "../types/analytics";
+import MetricsGrid from "../components/analytics/MetricsCharts";
+import PatientsTrends from "../components/analytics/PatientsTrends";
+import DiagnosticsPanel from "../components/analytics/DiagonasticPanel";
 
 /* ─── Period options ─────────────────────────────────────── */
 const PERIOD_OPTIONS: { label: string; value: Period }[] = [
@@ -35,7 +35,6 @@ export default function AnalyticsPage() {
     diagnoses,
     donutData,
     datasets,
-    loading,
     setPeriod,
     fetchAnalyticsData,
   } = useAnalyticsStore();
@@ -43,24 +42,9 @@ export default function AnalyticsPage() {
   // Stable dataset — avoids infinite loop from passing selector directly
   const dataset = useMemo(() => datasets[period], [datasets, period]);
 
-  useEffect(() => { fetchAnalyticsData(); }, [fetchAnalyticsData]);
-
-  if (loading) {
-    return (
-      <AppLayout
-        title="Analytics"
-        activeItem="analytics"
-        breadcrumbs={[{ label: "Dashboard" }, { label: "Analytics" }]}
-      >
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="flex flex-col items-center gap-4">
-            <LoadingSpinner size="lg" />
-            <p className="text-orange-800/60 font-medium">Loading analytics data...</p>
-          </div>
-        </div>
-      </AppLayout>
-    );
-  }
+  useEffect(() => { 
+    fetchAnalyticsData(); 
+  }, [fetchAnalyticsData]);
 
   return (
     <AppLayout
@@ -118,10 +102,9 @@ export default function AnalyticsPage() {
       </div>
 
       {/* ══ Sub-components ══ */}
-      <MetricsGrid    metrics={metrics} />
+      <MetricsGrid metrics={metrics} />
       <PatientsTrends period={period} dataset={dataset} />
       <DiagnosticsPanel diagnoses={diagnoses} donutData={donutData} />
-
     </AppLayout>
   );
 }
