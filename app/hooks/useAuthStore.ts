@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
   User as FirebaseUser,
@@ -17,12 +18,13 @@ export interface User {
 }
 
 export interface AuthState {
-  user:             User | null;
-  loading:          boolean;
-  error:            string | null;
-  signInWithGoogle: () => Promise<void>;
-  signOut:          () => Promise<void>;
-  initAuth:         () => () => void;
+  user:                    User | null;
+  loading:                 boolean;
+  error:                   string | null;
+  signInWithGoogle:        () => Promise<void>;
+  signInWithEmailPassword:  (email: string, password: string) => Promise<void>;
+  signOut:                 () => Promise<void>;
+  initAuth:                () => () => void;
 }
 
 /* ─── Session helpers ────────────────────────────────────── */
@@ -74,6 +76,34 @@ const useAuthStore = create<AuthState>((set) => ({
       set({
         loading: false, // ← always reset, no matter what
         error:   err instanceof Error ? err.message : "Sign-in failed. Please try again.",
+        user:    null,
+      });
+    }
+  },
+
+  /* ── Email/Password sign-in ── */
+  signInWithEmailPassword: async (email: string, password: string): Promise<void> => {
+    set({ loading: true, error: null });
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+
+      // Create server session
+      await createSession(result.user);
+
+      set({
+        user: {
+          uid:         result.user.uid,
+          displayName: result.user.displayName,
+          email:       result.user.email,
+          photoURL:    result.user.photoURL,
+        },
+        loading: false,
+        error:   null,
+      });
+    } catch (err: unknown) {
+      set({
+        loading: false,
+        error:   err instanceof Error ? err.message : "Email/password sign-in failed. Please try again.",
         user:    null,
       });
     }
