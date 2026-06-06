@@ -1,0 +1,16 @@
+import { Appointment } from "../types/appointments";
+
+export const APPOINTMENTS: Appointment[] = [
+  { id: "A1001", patient: "Sarah Mitchell",  initials: "SM", doctor: "Dr. James Carter",  specialty: "Cardiology",    date: "2026-04-13", time: "09:00 AM", duration: 30, type: "Follow-up",      status: "confirmed",  room: "Room 204", notes: "Blood pressure review" },
+  { id: "A1002", patient: "John Ramirez",    initials: "JR", doctor: "Dr. Priya Patel",   specialty: "Endocrinology", date: "2026-04-13", time: "10:00 AM", duration: 45, type: "Consultation",   status: "confirmed",  room: "Room 108" },
+  { id: "A1003", patient: "Emma Larson",     initials: "EL", doctor: "Dr. Arun Kumar",    specialty: "Pulmonology",   date: "2026-04-13", time: "11:30 AM", duration: 30, type: "Check-up",       status: "pending",    room: "Room 312" },
+  { id: "A1004", patient: "Raj Kumar",       initials: "RK", doctor: "Dr. James Carter",  specialty: "Orthopedics",   date: "2026-04-13", time: "02:00 PM", duration: 60, type: "Post-op Review", status: "confirmed",  room: "Room 204" },
+  { id: "A1005", patient: "Lisa Park",       initials: "LP", doctor: "Dr. Meera Nair",    specialty: "Endocrinology", date: "2026-04-13", time: "03:30 PM", duration: 30, type: "Consultation",   status: "pending",    room: "Room 115" },
+  { id: "A1006", patient: "Arjun Mehta",     initials: "AM", doctor: "Dr. Priya Patel",   specialty: "Cardiology",    date: "2026-04-14", time: "09:30 AM", duration: 45, type: "Emergency",      status: "confirmed",  room: "ICU-2",    notes: "High priority" },
+  { id: "A1007", patient: "Priya Sharma",    initials: "PS", doctor: "Dr. Arun Kumar",    specialty: "Neurology",     date: "2026-04-14", time: "11:00 AM", duration: 30, type: "Follow-up",      status: "completed",  room: "Room 306" },
+  { id: "A1008", patient: "David Chen",      initials: "DC", doctor: "Dr. James Carter",  specialty: "Orthopedics",   date: "2026-04-14", time: "02:30 PM", duration: 45, type: "Consultation",   status: "cancelled",  room: "Room 204", notes: "Patient requested reschedule" },
+  { id: "A1009", patient: "Ananya Singh",    initials: "AS", doctor: "Dr. Meera Nair",    specialty: "General",       date: "2026-04-15", time: "10:00 AM", duration: 20, type: "Check-up",       status: "confirmed",  room: "Room 101" },
+  { id: "A1010", patient: "Marcus Williams", initials: "MW", doctor: "Dr. Priya Patel",   specialty: "Cardiology",    date: "2026-04-15", time: "01:00 PM", duration: 30, type: "Follow-up",      status: "pending",    room: "Room 108" },
+  { id: "A1011", patient: "Fatima Al-Said",  initials: "FA", doctor: "Dr. Arun Kumar",    specialty: "Neurology",     date: "2026-04-16", time: "09:00 AM", duration: 60, type: "Consultation",   status: "confirmed",  room: "Room 312" },
+  { id: "A1012", patient: "Tom Bradley",     initials: "TB", doctor: "Dr. James Carter",  specialty: "Cardiology",    date: "2026-04-16", time: "03:00 PM", duration: 30, type: "Check-up",       status: "confirmed",  room: "Room 204" },
+];
