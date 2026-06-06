@@ -1,0 +1,26 @@
+{
+  "name": "prescription-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/database": "*",
+    "@repo/logger": "*",
+    "@repo/types": "*",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.4.0"
+  }
+}

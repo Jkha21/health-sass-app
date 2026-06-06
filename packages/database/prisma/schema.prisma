@@ -1,0 +1,266 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ==========================================
+// 1. AUTH & USER DOMAIN
+// ==========================================
+
+model User {
+  uid         String   @id
+  displayName String?
+  email       String?  @unique
+  photoURL    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==========================================
+// 2. PATIENT DOMAIN
+// ==========================================
+
+enum PatientStatus {
+  urgent
+  active
+  pending
+  complete
+}
+
+model Patient {
+  id                 String              @id @default(uuid())
+  name               String
+  initials           String
+  status             PatientStatus       @default(active)
+  condition          String
+  age                Int
+  location           String
+  nextVisit          String              // Stored as ISO string or specific format matching your frontend
+  doctor             String
+  ward               String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  
+  // Relations
+  appointments       Appointment[]
+  medicalRecords     MedicalRecord[]
+  telehealthSessions TelehealthSession[]
+  invoices           Invoice[]           // Linked to Billing Domain
+  feedActivities     ActivityFeed[]      // Linked to Feed Domain
+  prescriptions      Prescription[]      // Linked to Prescription Domain
+}
+
+// ==========================================
+// 3. APPOINTMENT DOMAIN
+// ==========================================
+
+enum AppointmentStatus {
+  confirmed
+  pending
+  completed
+  cancelled
+}
+
+model Appointment {
+  id        String            @id @default(uuid())
+  patientId String            // Foreign key to Patient table
+  patient   Patient           @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  initials  String
+  doctor    String
+  specialty String
+  date      String            // YYYY-MM-DD
+  time      String            // HH:mm
+  duration  Int               // In minutes
+  type      String            // e.g., "Checkup", "Follow-up"
+  status    AppointmentStatus @default(pending)
+  room      String
+  notes     String?           @db.Text
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([patientId])       // ⚡ Optimization: Speeds up appointment filtering by patient
+}
+
+// ==========================================
+// 4. MEDICAL RECORD DOMAIN
+// ==========================================
+
+enum RecordType {
+  lab
+  imaging
+  prescription
+  discharge
+  consultation
+  vaccination
+}
+
+enum RecordStatus {
+  normal
+  abnormal
+  critical
+  pending
+  reviewed
+}
+
+model MedicalRecord {
+  id          String       @id @default(uuid())
+  patientId   String       // Foreign key to Patient table
+  patient     Patient      @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientName String       // Explicit field mapping your interface's 'patient'
+  initials    String
+  type        RecordType
+  title       String
+  date        String
+  doctor      String
+  department  String
+  status      RecordStatus @default(pending)
+  summary     String       @db.Text
+  tags        String[]     // PostgreSQL native array type
+  fileSize    String?
+  pages       Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([patientId])       // ⚡ Optimization: Speeds up patient timeline rendering
+}
+
+// ==========================================
+// 5. TELEHEALTH DOMAIN
+// ==========================================
+
+enum SessionStatus {
+  live
+  scheduled
+  completed
+  missed
+  cancelled
+}
+
+enum SessionType {
+  video
+  audio
+  chat
+}
+
+enum ConsultType {
+  initial
+  followup
+  emergency
+}
+
+model TelehealthSession {
+  id           String        @id @default(uuid())
+  patientId    String        // Foreign key to Patient table
+  patient      Patient       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientName  String        // Explicit field mapping your interface's 'patient'
+  initials     String
+  age          Int
+  doctor       String
+  specialty    String
+  reason       String        @db.Text
+  date         String
+  time         String
+  duration     Int
+  status       SessionStatus @default(scheduled)
+  sessionType  SessionType
+  consultType  ConsultType
+  platform     String
+  rating       Float?
+  notes        String?       @db.Text
+  recordingUrl String?
+  waitTime     String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([patientId])       // ⚡ Optimization: Speeds up call history fetching
+}
+
+// ==========================================
+// 6. ANALYTICS & DASHBOARD READ MODELS
+// ==========================================
+
+model HistoricalAnalytics {
+  id         String   @id @default(uuid())
+  period     Int      // 7 | 30 | 90 | 365
+  date       DateTime @default(now())
+  volume     Int
+  volPrev    Int
+  billed     Float
+  collected  Float
+  general    Int
+  followUp   Int
+  specialist Int
+  telehealth Int
+}
+
+model DiagnosisAggregation {
+  id        String @id @default(uuid())
+  name      String @unique
+  patients  Int
+  pct       Float
+  trend     String // "up" | "down" | "neutral"
+}
+
+// ==========================================
+// 7. BILLING DOMAIN
+// ==========================================
+
+enum InvoiceStatus {
+  UNPAID
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+model Invoice {
+  id          String        @id @default(uuid())
+  patientId   String        // Foreign key to Patient table
+  patient     Patient       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  amount      Float
+  description String
+  status      InvoiceStatus @default(UNPAID)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([patientId])       // ⚡ Optimization: Speeds up lookup for billing ledgers
+}
+
+// ==========================================
+// 8. FEED & AUDIT DOMAIN
+// ==========================================
+
+model ActivityFeed {
+  id        String   @id @default(uuid())
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  type      String   // e.g., "APPOINTMENT_CREATED", "RECORD_UPDATED", "INVOICE_OVERDUE"
+  content   String   // Plain-text description of the event for timelines
+  metadata  Json?    // Optional structured contextual event payload
+  createdAt DateTime @default(now())
+
+  @@index([patientId])
+  @@index([createdAt])     // ⚡ Optimization: Speeds up chronological sorting of global feeds
+}
+
+// ==========================================
+// 9. PRESCRIPTION DOMAIN (Fixed for prescription-service)
+// ==========================================
+
+model Prescription {
+  id         String   @id @default(uuid())
+  patientId  String   // Foreign key to Patient table
+  patient    Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor     String
+  medication String
+  dosage     String
+  frequency  String
+  duration   String
+  notes      String?  @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([patientId])
+}
