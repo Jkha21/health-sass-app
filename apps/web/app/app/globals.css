@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Sora:wght@400;600;700;800&display=swap');
+@import "tailwindcss";
+
+
+/* ─── Design tokens ──────────────────────────────────────── */
+:root {
+  --background:    #fdeede;
+  --foreground:    #1f2937;
+
+  --orange:        #e85520;
+  --orange-light:  #f68540;
+  --orange-pale:   #ffd09a;
+  --orange-bg:     #fdeede;
+  --orange-border: #e8c8a8;
+  --text-dark:     #1f2937;
+  --text-body:     #4a4a4a;
+  --text-muted:    #8a6650;
+}
+
+/* ─── Force-hide all Next.js Dev/Error overlays & badges ─── */
+nextjs-portal, 
+[data-nextjs-portal], 
+[data-nextjs-toast], 
+[data-nextjs-dialog-root] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ─── Tailwind v4 theme extension ────────────────────────── */
+@theme inline {
+  --color-background:    var(--background);
+  --color-foreground:    var(--foreground);
+  --color-orange:        var(--orange);
+  --color-orange-light:  var(--orange-light);
+  --color-orange-pale:   var(--orange-pale);
+  --color-orange-bg:     var(--orange-bg);
+  --color-orange-border: var(--orange-border);
+
+  /* Google Fonts — loaded via @import at the top */
+  --font-sans:    "DM Sans", sans-serif;
+  --font-display: "Sora", sans-serif;
+}
+
+/* ─── Base resets ────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html[data-scroll-behavior="smooth"] {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "DM Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Prevent white flash before hydration */
+#__next,
+[data-nextjs-router] {
+  background: var(--background);
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+/* ─── Thin scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; height: 5px }
+::-webkit-scrollbar-track { background: transparent }
+::-webkit-scrollbar-thumb { background: #e8c8a8; border-radius: 99px }
+::-webkit-scrollbar-thumb:hover { background: #e85520 }
+
+/* ─── Reduced motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Keyframe Animations ────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes lfall {
+  0% { opacity: 0.9; transform: translateY(-40px) rotate(0deg); }
+  90% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(105vh) rotate(380deg); }
+}
+
+@keyframes fup {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shk {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-7px); }
+  40%, 80% { transform: translateX(7px); }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes orbit {
+  0% { transform: rotate(var(--a)) translateX(44px) rotate(calc(-1 * var(--a))) scale(0); }
+  20% { transform: rotate(var(--a)) translateX(44px) rotate(calc(-1 * var(--a))) scale(1); }
+  100% { transform: rotate(calc(var(--a) + 360deg)) translateX(44px) rotate(calc(-1 * (var(--a) + 360deg))) scale(0); }
+}
+
+.animate-shake {
+  animation: shk 0.38s ease !important;
+}
