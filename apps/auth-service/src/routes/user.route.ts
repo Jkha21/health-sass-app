@@ -1,10 +1,10 @@
 import express, { IRouter } from 'express';
 import { UserController } from '../controllers/user.controller.js';
-import userValidator from '../validators/user.validator.js';
+import UserValidator from '../validators/user.validator.js';
 
 export class UserRoutes {
   private userController = new UserController();
-  private userValidator = new userValidator();
+  private userValidator = new UserValidator();
   private router = express.Router();
 
   constructor() {
@@ -18,7 +18,7 @@ export class UserRoutes {
       '/profile/:uid', 
       this.userController.updateProfile
     );
-  };
+  }; 
 
   public getRoutes = (): IRouter => {
     return this.router;
